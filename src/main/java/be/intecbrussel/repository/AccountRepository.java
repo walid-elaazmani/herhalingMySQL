@@ -31,15 +31,7 @@ public class AccountRepository {
             String query = String.format("SELECT * FROM Account WHERE email = '%s' AND passw = '%s' ", email, passw);
             ResultSet rs = st.executeQuery(query);
 
-            rs.next();
-
-            if(rs.next() == false){
-                System.out.println("no found records !");
-                return false;
-            }
-
-            return true;
-
+            return rs.next(); // if found records = true else false :)
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
