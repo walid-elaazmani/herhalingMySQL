@@ -24,14 +24,13 @@ public class AccountRepository {
 
     public boolean getAccount(String email, String passw){
 
-
         try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountapp", "root", "V_521baf")){
 
             Statement st = connection.createStatement();
             String query = String.format("SELECT * FROM Account WHERE email = '%s' AND passw = '%s' ", email, passw);
             ResultSet rs = st.executeQuery(query);
 
-            return rs.next(); // if found records = true else false :)
+            return rs.next(); // if found records = true else false
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
