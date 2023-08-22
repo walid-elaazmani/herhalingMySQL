@@ -11,7 +11,7 @@ public class AccountRepository {
         try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountapp", "root", "V_521baf")){
 
             Statement st = connection.createStatement();
-            String query = String.format("INSERT INTO Account VALUES ('%s' , '%s');", account.getEmail(), account.getPassw());
+            String query = String.format("INSERT INTO Account VALUES ('%s','%s');", account.getEmail(), account.getPassw());
             st.executeUpdate(query);
 
             return true;
