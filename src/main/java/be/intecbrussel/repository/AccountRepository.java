@@ -1,5 +1,6 @@
 package be.intecbrussel.repository;
 
+import be.intecbrussel.config.MySQLConfiguration;
 import be.intecbrussel.model.Account;
 import be.intecbrussel.model.User;
 
@@ -8,33 +9,46 @@ import java.util.Optional;
 
 public class AccountRepository {
     public boolean createAccount(Account account) {
-        try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountapp", "root", "V_521baf")){
+
+        Connection connection = MySQLConfiguration.getConnection();
+
+        try{
 
             Statement st = connection.createStatement();
             String query = String.format("INSERT INTO Account VALUES ('%s','%s');", account.getEmail(), account.getPassw());
             st.executeUpdate(query);
-
-            return true;
+            connection.close();
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         }
+
+        return true;
     }
 
-    public boolean getAccount(String email, String passw){
+    public Optional<Account> getAccount(String email){
 
-        try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountapp", "root", "V_521baf")){
+//        String query = String.format("SELECT * FROM Account WHERE email like '%s'", email);
+        boolean foundRecords = false;
 
-            Statement st = connection.createStatement();
-            String query = String.format("SELECT * FROM Account WHERE email = '%s' AND passw = '%s' ", email, passw);
-            ResultSet rs = st.executeQuery(query);
+        try (Connection connection = MySQLConfiguration.getConnection()){
+            PreparedStatement pst = connection.prepareStatement("select * from account where email like ?");
+            pst.setString(1,email);
 
-            return rs.next(); // if found records = true else false
+            System.out.println(pst);
+
+            ResultSet rs = pst.executeQuery();
+
+            while(rs.next()){
+                return Optional.of(new Account(rs.getString(1), rs.getString(2)));
+            }
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
-            return false;
+            throw new RuntimeException();
         }
+
+        return Optional.empty();
     }
 }

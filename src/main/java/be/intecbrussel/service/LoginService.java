@@ -17,10 +17,6 @@ public class LoginService {
 
     public Optional<User> logIn(String email, String passw){
 
-        if (userService.getUser(email, passw).isEmpty() & !accountService.getAccount(email,passw)){
-            return Optional.empty();
-        }
-
         return userService.getUser(email, passw);
     }
 }

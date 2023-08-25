@@ -11,6 +11,6 @@ public class AccountService {
 
     public boolean getAccount(String email, String passw){
 
-        return accountRepository.getAccount(email, passw);
+        return accountRepository.getAccount(email).get().getPassw().equals(passw);
     }
 }
