@@ -45,12 +45,15 @@ public class AccountApp {
 
     private static void login(){
         Scanner scanner = new Scanner(System.in);
+        LoginService loginService = new LoginService();
+
+
         System.out.println("email");
         String email =scanner.nextLine();
         System.out.println("password");
         String passw = scanner.nextLine();
 
-        LoginService loginService = new LoginService();
+
         Optional<User> user = loginService.logIn(email, passw);
         if(user.isPresent())
         System.out.print("welcome " + user.get().getFname() + " " + user.get().getLname());
