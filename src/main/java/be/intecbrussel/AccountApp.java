@@ -48,15 +48,18 @@ public class AccountApp {
         LoginService loginService = new LoginService();
 
 
-        System.out.println("email");
-        String email =scanner.nextLine();
-        System.out.println("password");
-        String passw = scanner.nextLine();
+       try{
+           System.out.println("email");
+           String email =scanner.nextLine();
+           System.out.println("password");
+           String passw = scanner.nextLine();
 
-
-        Optional<User> user = loginService.logIn(email, passw);
-        if(user.isPresent())
-        System.out.print("welcome " + user.get().getFname() + " " + user.get().getLname());
-        else System.out.println("user not found");
+           Optional<User> user = loginService.logIn(email, passw);
+           if(user.isPresent())
+               System.out.print("welcome " + user.get().getFname() + " " + user.get().getLname());
+           else System.out.println("user not found");
+       } catch (RuntimeException e){
+           System.out.println("Database error, check connection");
+       }
     }
 }
