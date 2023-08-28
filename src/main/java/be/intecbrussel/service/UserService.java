@@ -18,12 +18,14 @@ public class UserService {
        return false;
     }
 
-    public Optional<User> getUser(String email, String passw){
+    public Optional<User> getUser(String email){
 
-        boolean success = accountService.getAccount(email, passw);
+        Optional<Account> account = accountService.getAccount(email);
 
-        if(success){
-            return userRepository.getUser(email, passw);
+        if(account.isPresent()){
+            Account foundAccount = account.get();
+
+            return userRepository.getUser(foundAccount);
         }
 
         return Optional.empty();

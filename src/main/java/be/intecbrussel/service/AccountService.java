@@ -11,11 +11,9 @@ public class AccountService {
         return accountRepository.createAccount(account);
     }
 
-    public boolean getAccount(String email, String passw){
+    public Optional<Account> getAccount(String email){
 
-        Optional<Account> account = accountRepository.getAccount(email);
-
-        return account.map(value -> value.getPassw().equals(passw)).orElse(false);
+        return accountRepository.getAccount(email);
 
     }
 }

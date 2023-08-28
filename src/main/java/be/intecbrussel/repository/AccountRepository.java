@@ -10,14 +10,14 @@ import java.util.Optional;
 public class AccountRepository {
     public boolean createAccount(Account account) {
 
-        Connection connection = MySQLConfiguration.getConnection();
+        try (Connection connection = MySQLConfiguration.getConnection();){
 
-        try{
+            PreparedStatement st = connection.prepareStatement("INSERT INTO Account VALUES (?,?);");
+            st.setString(1, account.getEmail());
+            st.setString(2, account.getPassw());
 
-            Statement st = connection.createStatement();
-            String query = String.format("INSERT INTO Account VALUES ('%s','%s');", account.getEmail(), account.getPassw());
-            st.executeUpdate(query);
-            connection.close();
+            st.executeQuery();
+
 
         } catch(SQLException e){
             System.out.println(e.getMessage());

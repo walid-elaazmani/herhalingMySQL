@@ -10,33 +10,38 @@ import java.util.Optional;
 public class UserRepository {
     public boolean createUser(User user) {
 
+        try(Connection connection = MySQLConfiguration.getConnection()){
 
-        try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/accountapp", "root", "V_521baf")){
+            PreparedStatement st = connection.prepareStatement( "INSERT INTO User VALUES (?,?,?,?);");
 
-            Statement st = connection.createStatement();
-            String query = String.format("INSERT INTO User VALUES ('%d','%s','%s','%s')", user.getId(),user.getFname(), user.getLname(), user.getAccount().getEmail());
-            st.executeUpdate(query);
+            st.setLong(1, user.getId());
+            st.setString(2, user.getFname());
+            st.setString(3, user.getLname());
+            st.setString(4, user.getAccount().getEmail());
 
-            return true;
+            st.executeUpdate();
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
             return false;
+
         }
+        return true;
     }
 
-    public Optional<User> getUser(String email, String passw){
+    public Optional<User> getUser(Account account){
 
         try(Connection connection = MySQLConfiguration.getConnection()){
 
             PreparedStatement st = connection.prepareStatement("SELECT * FROM User WHERE accEmail like ?");
-            st.setString(1, email);
+            st.setString(1, account.getEmail());
 
             ResultSet rs = st.executeQuery();
 
-            while (rs.next()){
+            if (rs.next()){
+
                 return Optional.of(new User (rs.getLong(1), rs.getString(2),
-                        rs.getString(3), new Account(email, passw)));
+                        rs.getString(3), account));
             }
 
         } catch(SQLException e){

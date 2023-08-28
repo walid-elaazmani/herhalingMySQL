@@ -17,6 +17,6 @@ public class LoginService {
 
     public Optional<User> logIn(String email, String passw){
 
-        return userService.getUser(email, passw);
+        return userService.getUser(email);
     }
 }
