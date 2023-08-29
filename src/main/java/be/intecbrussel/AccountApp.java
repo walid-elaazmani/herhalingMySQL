@@ -1,16 +1,19 @@
 package be.intecbrussel;
 
+import be.intecbrussel.model.Account;
 import be.intecbrussel.model.User;
 import be.intecbrussel.service.LoginService;
 import be.intecbrussel.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class AccountApp {
     public static void main(String[] args) {
         System.out.println("Hello visitor");
-        System.out.println("1. register, 2. login");
+        System.out.println("1. register, 2. login, 3. add multiple users");
         Scanner scanner = new Scanner(System.in);
         int userchoice = scanner.nextInt();
 
@@ -20,6 +23,9 @@ public class AccountApp {
                 break;
             case 2 :
                 login();
+                break;
+            case 3 :
+                batchInsert();
                 break;
             default:
                 System.out.println("Wrong Input");
@@ -62,4 +68,36 @@ public class AccountApp {
            System.out.println("Database error, check connection");
        }
     }
+
+    private static void batchInsert(){
+
+        List<User> usersList = new ArrayList<>();
+
+
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < 5; i++) {
+
+            System.out.println("fname");
+            String fname = scanner.nextLine();
+            System.out.println("lname");
+            String lname =scanner.nextLine();
+            System.out.println("email");
+            String email = scanner.nextLine();
+            System.out.println("password");
+            String passw = scanner.nextLine();
+
+            User user = new User(fname,lname, new Account(email, passw));
+            usersList.add(user);
+
+
+        }
+
+        LoginService loginService = new LoginService();
+
+        loginService.registerManyUsers(usersList);
+
+    }
+
+
 }

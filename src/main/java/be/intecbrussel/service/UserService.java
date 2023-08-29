@@ -4,6 +4,8 @@ import be.intecbrussel.model.Account;
 import be.intecbrussel.model.User;
 import be.intecbrussel.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserService {
@@ -30,4 +32,17 @@ public class UserService {
 
         return Optional.empty();
     }
+
+    public void createManyUsers(List<User> userList) {
+
+        List<Account> accountList = new ArrayList<>();
+
+        for (User user: userList
+             ) {
+
+        }
+
+
+    }
+
 }

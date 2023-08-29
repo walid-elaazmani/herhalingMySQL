@@ -16,7 +16,7 @@ public class AccountRepository {
             st.setString(1, account.getEmail());
             st.setString(2, account.getPassw());
 
-            st.executeQuery();
+            st.executeUpdate();
 
 
         } catch(SQLException e){
